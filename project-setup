@@ -1,0 +1,22 @@
+steps
+
+create cluster using eks.yaml file 
+
+eksctl create cluster --config-file=eks.yaml
+
+after cluser creation create expense name space and switch to that ns
+
+clone repos
+
+create mysql pods  - kubectl apply -f manifest.yaml
+create backend
+create front end
+
+
+logs
+
+kubectl logs <pod name >
+
+
+
+
