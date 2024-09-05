@@ -4,7 +4,7 @@ create cluster using eks.yaml file
 
 eksctl create cluster --config-file=eks.yaml
 
-after cluser creation create expense name space and switch to that ns
+after cluser creation create expense name space and switch to that ns   ## kubens expanse
 
 clone repos
 
