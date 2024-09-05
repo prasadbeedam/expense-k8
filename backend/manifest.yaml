@@ -5,7 +5,7 @@ metadata:
   namespace: expense
 data:
   #DB_HOST: mysql # mysql component service name
-  DB_HOST: mysql
+  DB_HOST: db-dev.anuprasad.online
 
 ---
 
@@ -34,6 +34,10 @@ spec:
         project: expense
         tier: app 
     spec:
+      initContainers:
+      - name: init-myservice
+        image: busybox:1.28
+        command: ['sh', '-c', "until nslookup db-dev.anuprasad.online; do echo waiting for myservice; sleep 2; done"]
       containers:
       - name: backend
         image: joindevops/backend:v1.0
@@ -44,9 +48,23 @@ spec:
           limits:
             cpu: "150m"
             memory: "256Mi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          failureThreshold: 2
+          periodSeconds: 5
+          initialDelaySeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          failureThreshold: 2
+          periodSeconds: 5
+          initialDelaySeconds: 30
         envFrom:
-          - configMapRef:
-             name: backend    
+        - configMapRef:
+            name: backend   
 ---
 apiVersion: v1
 kind: Service
